@@ -9,8 +9,9 @@ public class SphericalVariation extends VariationFunction{
     public void useVariation(Coordinate coordinate) {
         double x = coordinate.getX();
         double y = coordinate.getY();
-        double r = Math.sqrt(x*x+y*y);
-        coordinate.setX(x/(r*r));
-        coordinate.setY(y/(r*r));
+        double r2 = x * x + y * y;
+        coordinate.setX(x / r2);
+        coordinate.setY(y / r2);
+
     }
 }

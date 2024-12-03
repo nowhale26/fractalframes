@@ -9,7 +9,8 @@ public class SinusoidalVariation extends VariationFunction {
     public void useVariation(Coordinate coordinate) {
         double x = coordinate.getX();
         double y = coordinate.getY();
-        coordinate.setX(Math.sin(x));
-        coordinate.setY(Math.sin(y));
+        double scale = 5.0;
+        coordinate.setX(scale*Math.sin(x));
+        coordinate.setY(scale*Math.sin(y));
     }
 }
