@@ -6,12 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Pixel {
-    private final Coordinate coordinate;
+    private int x;
+    private int y;
     private Rgb rgb;
     private int counter;
 
-    public Pixel(Coordinate coord){
-        this.coordinate = coord;
+    public Pixel(int x, int y){
+        this.x=x;
+        this.y=y;
         counter=0;
     }
 }

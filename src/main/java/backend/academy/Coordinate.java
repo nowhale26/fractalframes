@@ -1,11 +1,16 @@
 package backend.academy;
 
-public class Coordinate {
-    private final int x;
-    private final int y;
+import lombok.Getter;
+import lombok.Setter;
 
-    public Coordinate(int x, int y){
+@Getter
+@Setter
+public class Coordinate {
+    private double x;
+    private double y;
+
+    public Coordinate(double x, double y) {
         this.x = x;
-        this.y=y;
+        this.y = y;
     }
 }
