@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.image;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package backend.academy;
+package backend.academy.image;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ public class Rgb {
     private int green;
     private int blue;
 
-    public Red(){
+    public Rgb(){
 
     }
 

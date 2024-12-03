@@ -1,5 +1,7 @@
 package backend.academy;
 
+import backend.academy.image.Rgb;
+
 public class Constants {
 
     private Constants() {

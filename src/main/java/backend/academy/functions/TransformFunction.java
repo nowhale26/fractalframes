@@ -1,4 +1,8 @@
-package backend.academy;
+package backend.academy.functions;
+
+import backend.academy.Constants;
+import backend.academy.Coordinate;
+import backend.academy.image.Rgb;
 
 import java.util.concurrent.ThreadLocalRandom;
 
