@@ -19,6 +19,7 @@ public class FractalImage {
     public final int yRes;
     public final VariationFunction variation;
     private Pixel[][] pixels;
+    private boolean symmetry;
 
     public FractalImage(
         int fractalDots,
@@ -26,7 +27,8 @@ public class FractalImage {
         int iterations,
         int xRes,
         int yRes,
-        VariationFunction variation
+        VariationFunction variation,
+        boolean symmetry
     ) {
         this.fractalDots = fractalDots;
         this.transformsNum = transformsNum;
@@ -34,6 +36,7 @@ public class FractalImage {
         this.xRes = xRes;
         this.yRes = yRes;
         this.variation = variation;
+        this.symmetry=symmetry;
         pixels = new Pixel[xRes][yRes];
         for (int x = 0; x < xRes; x++) {
             for (int y = 0; y < yRes; y++) {
@@ -52,6 +55,10 @@ public class FractalImage {
                 int blue = pixels[x][y].getRgb().getBlue();
                 int rgb = (red << 16) | (green << 8) | blue;
                 image.setRGB(x, y, rgb);
+                if(symmetry){
+                    int mirroredX = xRes-1-x;
+                    image.setRGB(mirroredX,y,rgb);
+                }
             }
         }
         try {

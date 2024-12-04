@@ -1,6 +1,7 @@
 package backend.academy;
 
 import backend.academy.functions.variations.HandkerchiefVariation;
+import backend.academy.functions.variations.HeartVariation;
 import backend.academy.functions.variations.HorseshoeVariation;
 import backend.academy.functions.variations.SinusoidalVariation;
 import backend.academy.functions.variations.SphericalVariation;
@@ -15,7 +16,7 @@ import lombok.experimental.UtilityClass;
 public class Main {
     public static void main(String[] args) {
         VariationFunction variation = new SphericalVariation();
-        FractalImage image = new FractalImage(12000,10,40000,1920,1080, variation);
+        FractalImage image = new FractalImage(10000,25,40000,1920,1080, variation,false);
         ImageRenderer renderer = new OneThreadRenderer();
         renderer.render(image);
         renderer.logGammaCorrection(image);

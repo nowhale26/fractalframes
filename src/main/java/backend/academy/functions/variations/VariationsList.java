@@ -11,6 +11,7 @@ public class VariationsList {
         new SphericalVariation(),
         new SwirlVariation(),
         new HorseshoeVariation(),
-        new HandkerchiefVariation()
+        new HandkerchiefVariation(),
+        new HeartVariation()
     };
 }
