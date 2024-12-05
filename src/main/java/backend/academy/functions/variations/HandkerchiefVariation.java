@@ -2,7 +2,7 @@ package backend.academy.functions.variations;
 
 import backend.academy.Coordinate;
 
-public class HandkerchiefVariation extends VariationFunction{
+public class HandkerchiefVariation extends VariationFunction {
     public final String name = "Функция \"Носовой платок\"";
 
     @Override
@@ -15,5 +15,10 @@ public class HandkerchiefVariation extends VariationFunction{
         double newY = Math.cos(t-r)*r;
         coordinate.setX(newX);
         coordinate.setY(newY);
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

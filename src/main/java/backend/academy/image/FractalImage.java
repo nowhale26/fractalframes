@@ -20,6 +20,7 @@ public class FractalImage {
     public final VariationFunction variation;
     private Pixel[][] pixels;
     private boolean symmetry;
+    private int threads;
 
     public FractalImage(
         int fractalDots,
@@ -28,7 +29,8 @@ public class FractalImage {
         int xRes,
         int yRes,
         VariationFunction variation,
-        boolean symmetry
+        boolean symmetry,
+        int threads
     ) {
         this.fractalDots = fractalDots;
         this.transformsNum = transformsNum;
@@ -37,6 +39,7 @@ public class FractalImage {
         this.yRes = yRes;
         this.variation = variation;
         this.symmetry=symmetry;
+        this.threads = threads;
         pixels = new Pixel[xRes][yRes];
         for (int x = 0; x < xRes; x++) {
             for (int y = 0; y < yRes; y++) {
@@ -45,7 +48,7 @@ public class FractalImage {
         }
     }
 
-    public void createImage() {
+    public void createImage(boolean multithread) {
         BufferedImage image = new BufferedImage(xRes, yRes, BufferedImage.TYPE_INT_RGB);
 
         for (int x = 0; x < xRes; x++) {
@@ -62,7 +65,13 @@ public class FractalImage {
             }
         }
         try {
-            File outputFile = new File("output_image.png");
+            String name;
+            if(multithread){
+                name = "multi_thread_output_image.png";
+            } else {
+                name = "one_thread_output_image.png";
+            }
+            File outputFile = new File(name);
             ImageIO.write(image, "png", outputFile);
             log.info("Изображение сохранено");
         } catch (IOException e) {

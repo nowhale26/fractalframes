@@ -1,5 +1,6 @@
 package backend.academy.renders;
 
+import backend.academy.Constants;
 import backend.academy.Coordinate;
 import backend.academy.functions.TransformFunction;
 import backend.academy.image.FractalImage;
@@ -32,21 +33,22 @@ public class OneThreadRenderer implements ImageRenderer {
                     int yPixel = (int) ((coord.getY() - yMin) / (yMax - yMin) * (fractalImage.yRes - 1));
 
                     if (xPixel >= 0 && xPixel < fractalImage.xRes && yPixel >= 0 && yPixel < fractalImage.yRes) {
-                        if (fractalImage.getPixels()[xPixel][yPixel].getCounter() == 0) {
-                            fractalImage.getPixels()[xPixel][yPixel].getRgb().setRed(transform.getRgb().getRed());
-                            fractalImage.getPixels()[xPixel][yPixel].getRgb().setGreen(transform.getRgb().getGreen());
-                            fractalImage.getPixels()[xPixel][yPixel].getRgb().setBlue(transform.getRgb().getBlue());
+                        var currentPixel = fractalImage.getPixels()[xPixel][yPixel];
+                        if (currentPixel.getCounter() == 0) {
+                            currentPixel.getRgb().setRed(transform.getRgb().getRed());
+                            currentPixel.getRgb().setGreen(transform.getRgb().getGreen());
+                            currentPixel.getRgb().setBlue(transform.getRgb().getBlue());
                         } else {
-                            Rgb rgb = fractalImage.getPixels()[xPixel][yPixel].getRgb();
+                            Rgb rgb = currentPixel.getRgb();
                             int red = (rgb.getRed() + transform.getRgb().getRed()) / 2;
                             int green = (rgb.getGreen() + transform.getRgb().getGreen()) / 2;
                             int blue = (rgb.getBlue() + transform.getRgb().getBlue()) / 2;
-                            fractalImage.getPixels()[xPixel][yPixel].getRgb().setRed(red);
-                            fractalImage.getPixels()[xPixel][yPixel].getRgb().setGreen(green);
-                            fractalImage.getPixels()[xPixel][yPixel].getRgb().setBlue(blue);
+                            currentPixel.getRgb().setRed(red);
+                            currentPixel.getRgb().setGreen(green);
+                            currentPixel.getRgb().setBlue(blue);
                         }
-                        int counter = fractalImage.getPixels()[xPixel][yPixel].getCounter();
-                        fractalImage.getPixels()[xPixel][yPixel].setCounter(counter + 1);
+                        int counter = currentPixel.getCounter();
+                        currentPixel.setCounter(counter + 1);
                     }
 
                 }
@@ -58,7 +60,6 @@ public class OneThreadRenderer implements ImageRenderer {
     @Override
     public void logGammaCorrection(FractalImage fractalImage) {
         double max = 0.0;
-        double gamma = 2.2;
         for (int x = 0; x < fractalImage.xRes; x++) {
             for (int y = 0; y < fractalImage.yRes; y++) {
                 if (fractalImage.getPixels()[x][y].getCounter() != 0) {
@@ -74,12 +75,15 @@ public class OneThreadRenderer implements ImageRenderer {
         for (int x = 0; x < fractalImage.xRes; x++) {
             for (int y = 0; y < fractalImage.yRes; y++) {
                 double normal = fractalImage.getPixels()[x][y].getNormal();
-                fractalImage.getPixels()[x][y].setNormal(normal/max);
-                int red = (int) ( fractalImage.getPixels()[x][y].getRgb().getRed()*Math.pow(fractalImage.getPixels()[x][y].getNormal(),(1.0/gamma)));
+                fractalImage.getPixels()[x][y].setNormal(normal / max);
+                int red = (int) (fractalImage.getPixels()[x][y].getRgb().getRed() *
+                    Math.pow(fractalImage.getPixels()[x][y].getNormal(), (1.0 / Constants.GAMMA)));
                 fractalImage.getPixels()[x][y].getRgb().setRed(red);
-                int green = (int) ( fractalImage.getPixels()[x][y].getRgb().getGreen()*Math.pow(fractalImage.getPixels()[x][y].getNormal(),(1.0/gamma)));
+                int green = (int) (fractalImage.getPixels()[x][y].getRgb().getGreen() *
+                    Math.pow(fractalImage.getPixels()[x][y].getNormal(), (1.0 / Constants.GAMMA)));
                 fractalImage.getPixels()[x][y].getRgb().setGreen(green);
-                int blue = (int) ( fractalImage.getPixels()[x][y].getRgb().getBlue()*Math.pow(fractalImage.getPixels()[x][y].getNormal(),(1.0/gamma)));
+                int blue = (int) (fractalImage.getPixels()[x][y].getRgb().getBlue() *
+                    Math.pow(fractalImage.getPixels()[x][y].getNormal(), (1.0 / Constants.GAMMA)));
                 fractalImage.getPixels()[x][y].getRgb().setBlue(blue);
             }
         }

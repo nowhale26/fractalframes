@@ -15,4 +15,9 @@ public class HeartVariation extends VariationFunction{
         coordinate.setX(newX);
         coordinate.setY(newY);
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

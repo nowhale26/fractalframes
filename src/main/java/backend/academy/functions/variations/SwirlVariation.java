@@ -15,4 +15,9 @@ public class SwirlVariation extends VariationFunction{
         coordinate.setX(newX);
         coordinate.setY(newY);
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

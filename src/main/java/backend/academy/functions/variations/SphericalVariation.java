@@ -14,4 +14,9 @@ public class SphericalVariation extends VariationFunction{
         coordinate.setY(y / r2);
 
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

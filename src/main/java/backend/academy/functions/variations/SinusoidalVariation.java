@@ -13,4 +13,9 @@ public class SinusoidalVariation extends VariationFunction {
         coordinate.setX(scale*Math.sin(x));
         coordinate.setY(scale*Math.sin(y));
     }
+
+    @Override
+    public String getName() {
+        return name;
+    }
 }

@@ -24,5 +24,8 @@ public class Constants {
     public static final int MAX_FRACTALS_IT = 100000;
     public static final int MIN_TRANSFORMS = 1;
     public static final int MAX_TRANSFORMS = 100;
+    public static final int MIN_THREADS = 1;
+    public static final int MAX_THREADS = 8;
+    public static final double GAMMA = 2.2;
 
 }

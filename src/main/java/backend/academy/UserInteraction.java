@@ -2,6 +2,7 @@ package backend.academy;
 
 import backend.academy.functions.variations.VariationFunction;
 import backend.academy.functions.variations.VariationsList;
+import backend.academy.image.FractalImage;
 import org.apache.commons.lang3.StringUtils;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,12 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
 public class UserInteraction {
-    private int getHeight(InputStream input, OutputStream output) throws IOException {
+
+    private UserInteraction(){
+
+    }
+
+    private static int getHeight(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int yRes = -1;
@@ -37,7 +43,7 @@ public class UserInteraction {
 
     }
 
-    private int getWidth(InputStream input, OutputStream output) throws IOException {
+    private static int getWidth(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int xRes = -1;
@@ -59,7 +65,7 @@ public class UserInteraction {
         return xRes;
     }
 
-    private int getFractalDots(InputStream input, OutputStream output) throws IOException {
+    private static int getFractalDots(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int fractalDots = -1;
@@ -82,7 +88,7 @@ public class UserInteraction {
         return fractalDots;
     }
 
-    private int getIterations(InputStream input, OutputStream output) throws IOException {
+    private static int getIterations(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int iterations = -1;
@@ -105,7 +111,7 @@ public class UserInteraction {
         return iterations;
     }
 
-    private int getTransformsNum(InputStream input, OutputStream output) throws IOException {
+    private static int getTransformsNum(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int transformsNum = -1;
@@ -128,13 +134,13 @@ public class UserInteraction {
         return transformsNum;
     }
 
-    private boolean getSymmetry(InputStream input, OutputStream output) throws IOException {
+    private static boolean getSymmetry(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int sym = -1;
         while (sym != 0 && sym != 1) {
             writer.println(
-                "Введите 1, если хотите использовать параметр симметрии\n Введите 0, если не хотите использовать параметр симметрии");
+                "Введите 1, если хотите использовать параметр симметрии\nВведите 0, если не хотите использовать параметр симметрии");
             String symInput = reader.readLine();
             if (symInput == null) {
                 writer.println("Ошибка: не удалось считать параметр симметрии");
@@ -151,13 +157,13 @@ public class UserInteraction {
         return sym == 1;
     }
 
-    private VariationFunction getVariation(InputStream input, OutputStream output) throws IOException {
+    private static VariationFunction getVariation(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         writer.println("Выберите одну нелинейную функцию из списка ниже, нужно ввести ее номер\n");
         VariationFunction[] variations = VariationsList.VARIATION_FUNCTIONS;
         for (int i = 0; i < variations.length; i++) {
-            writer.println(variations[i].name + "Номер: " + i + "\n");
+            writer.println(variations[i].getName() + " Номер: " + i + "\n");
         }
         int variationIndex = -1;
         while (variationIndex < 0 || variationIndex > variations.length - 1) {
@@ -171,8 +177,69 @@ public class UserInteraction {
                 writer.println("Ошибка: Номер нелинейной функции должен быть числом.");
                 continue;
             }
-            variationIndex=Integer.parseInt(variationInput);
+            variationIndex = Integer.parseInt(variationInput);
         }
         return variations[variationIndex];
     }
+
+    private static int getNumOfThreads(InputStream input, OutputStream output) throws IOException {
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+        int threadsNum = -1;
+        while (threadsNum < Constants.MIN_THREADS || threadsNum > Constants.MAX_THREADS) {
+            writer.println("Введите количество потоков от " + Constants.MIN_THREADS + " до " +
+                Constants.MAX_TRANSFORMS+"\n");
+            writer.println("(1 поток означает работу в однопоточном режиме)");
+            String transformsInput = reader.readLine();
+            if (transformsInput == null) {
+                writer.println("Ошибка: не удалось считать количество потоков");
+                continue;
+            }
+
+            if (!StringUtils.isNumeric(transformsInput)) {
+                writer.println("Ошибка: Количество потоков должно быть числом.");
+                continue;
+            }
+
+            threadsNum = Integer.parseInt(transformsInput);
+        }
+        return threadsNum;
+
+    }
+
+    public static FractalImage getUserInput(InputStream input, OutputStream output) throws IOException{
+        int height = getHeight(input, output);
+        int width = getWidth(input,output);
+        int fractalDots = getFractalDots(input,output);
+        int iterations = getIterations(input,output);
+        int transformsNum = getTransformsNum(input,output);
+        boolean symmetry = getSymmetry(input, output);
+        VariationFunction variation = getVariation(input,output);
+        int threads = getNumOfThreads(input, output);
+        return new FractalImage(fractalDots,transformsNum,iterations,width, height, variation, symmetry, threads);
+    }
+
+    public static boolean onlyMultiThread(InputStream input, OutputStream output) throws IOException{
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
+        int bool = -1;
+        while (bool != 0 && bool != 1) {
+            writer.println(
+                "Введите 1, если хотите использовать программу только в многопоточном режиме\nВведите 0, если хотите использовать оба режима");
+            String boolInput = reader.readLine();
+            if (boolInput == null) {
+                writer.println("Ошибка: не удалось считать режим");
+                continue;
+            }
+
+            if (!StringUtils.isNumeric(boolInput)) {
+                writer.println("Ошибка: Режим симметрии должен быть числом.");
+                continue;
+            }
+
+            bool = Integer.parseInt(boolInput);
+        }
+        return bool == 1;
+    }
+
 }
