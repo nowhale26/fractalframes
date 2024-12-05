@@ -4,6 +4,8 @@ import backend.academy.functions.variations.VariationFunction;
 import backend.academy.functions.variations.VariationsList;
 import backend.academy.image.FractalImage;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +17,9 @@ import java.nio.charset.StandardCharsets;
 
 public class UserInteraction {
 
-    private UserInteraction(){
+    private static final Logger log = LoggerFactory.getLogger(UserInteraction.class);
+
+    private UserInteraction() {
 
     }
 
@@ -163,7 +167,7 @@ public class UserInteraction {
         writer.println("Выберите одну нелинейную функцию из списка ниже, нужно ввести ее номер\n");
         VariationFunction[] variations = VariationsList.VARIATION_FUNCTIONS;
         for (int i = 0; i < variations.length; i++) {
-            writer.println(variations[i].getName() + " Номер: " + i + "\n");
+            writer.println(variations[i].getName() + " Номер: " + i);
         }
         int variationIndex = -1;
         while (variationIndex < 0 || variationIndex > variations.length - 1) {
@@ -188,7 +192,7 @@ public class UserInteraction {
         int threadsNum = -1;
         while (threadsNum < Constants.MIN_THREADS || threadsNum > Constants.MAX_THREADS) {
             writer.println("Введите количество потоков от " + Constants.MIN_THREADS + " до " +
-                Constants.MAX_TRANSFORMS+"\n");
+                Constants.MAX_THREADS);
             writer.println("(1 поток означает работу в однопоточном режиме)");
             String transformsInput = reader.readLine();
             if (transformsInput == null) {
@@ -207,19 +211,19 @@ public class UserInteraction {
 
     }
 
-    public static FractalImage getUserInput(InputStream input, OutputStream output) throws IOException{
+    public static FractalImage getUserInput(InputStream input, OutputStream output) throws IOException {
         int height = getHeight(input, output);
-        int width = getWidth(input,output);
-        int fractalDots = getFractalDots(input,output);
-        int iterations = getIterations(input,output);
-        int transformsNum = getTransformsNum(input,output);
+        int width = getWidth(input, output);
+        int fractalDots = getFractalDots(input, output);
+        int iterations = getIterations(input, output);
+        int transformsNum = getTransformsNum(input, output);
         boolean symmetry = getSymmetry(input, output);
-        VariationFunction variation = getVariation(input,output);
+        VariationFunction variation = getVariation(input, output);
         int threads = getNumOfThreads(input, output);
-        return new FractalImage(fractalDots,transformsNum,iterations,width, height, variation, symmetry, threads);
+        return new FractalImage(fractalDots, transformsNum, iterations, width, height, variation, symmetry, threads);
     }
 
-    public static boolean onlyMultiThread(InputStream input, OutputStream output) throws IOException{
+    public static boolean onlyMultiThread(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int bool = -1;
@@ -240,6 +244,20 @@ public class UserInteraction {
             bool = Integer.parseInt(boolInput);
         }
         return bool == 1;
+    }
+
+    public static void printStatistics(double oneThreadTime, double multiThreadTime, OutputStream output)
+        throws IOException {
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
+        writer.println("Время исполнения программы в однопоточном режиме: " + oneThreadTime + " секунд");
+        writer.println("Время исполнения программы в многопоточном режиме: " + multiThreadTime + " секунд");
+        double comparison = oneThreadTime / multiThreadTime;
+        writer.println("Программа в многопоточном режиме выполнилась в " + comparison + " раз быстрее");
+    }
+
+    public static void printStartRender(OutputStream output) throws IOException{
+        PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
+        writer.println("Рендер картинки начался...");
     }
 
 }
