@@ -23,7 +23,7 @@ public class UserInteraction {
 
     }
 
-    private static int getHeight(InputStream input, OutputStream output) throws IOException {
+    public static int getHeight(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int yRes = -1;
@@ -47,7 +47,7 @@ public class UserInteraction {
 
     }
 
-    private static int getWidth(InputStream input, OutputStream output) throws IOException {
+    public static int getWidth(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int xRes = -1;
@@ -69,7 +69,7 @@ public class UserInteraction {
         return xRes;
     }
 
-    private static int getFractalDots(InputStream input, OutputStream output) throws IOException {
+    public static int getFractalDots(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int fractalDots = -1;
@@ -92,7 +92,7 @@ public class UserInteraction {
         return fractalDots;
     }
 
-    private static int getIterations(InputStream input, OutputStream output) throws IOException {
+    public static int getIterations(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int iterations = -1;
@@ -115,7 +115,7 @@ public class UserInteraction {
         return iterations;
     }
 
-    private static int getTransformsNum(InputStream input, OutputStream output) throws IOException {
+    public static int getTransformsNum(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int transformsNum = -1;
@@ -138,7 +138,7 @@ public class UserInteraction {
         return transformsNum;
     }
 
-    private static boolean getSymmetry(InputStream input, OutputStream output) throws IOException {
+    public static boolean getSymmetry(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int sym = -1;
@@ -161,7 +161,7 @@ public class UserInteraction {
         return sym == 1;
     }
 
-    private static VariationFunction getVariation(InputStream input, OutputStream output) throws IOException {
+    public static VariationFunction getVariation(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         writer.println("Выберите одну нелинейную функцию из списка ниже, нужно ввести ее номер\n");
@@ -186,7 +186,7 @@ public class UserInteraction {
         return variations[variationIndex];
     }
 
-    private static int getNumOfThreads(InputStream input, OutputStream output) throws IOException {
+    public static int getNumOfThreads(InputStream input, OutputStream output) throws IOException {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int threadsNum = -1;
