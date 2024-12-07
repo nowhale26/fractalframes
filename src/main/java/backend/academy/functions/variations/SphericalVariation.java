@@ -2,8 +2,8 @@ package backend.academy.functions.variations;
 
 import backend.academy.Coordinate;
 
-public class SphericalVariation extends VariationFunction{
-    public final String name = "Сферическая функция";
+public class SphericalVariation extends VariationFunction {
+    public static final String NAME = "Сферическая функция";
 
     @Override
     public void useVariation(Coordinate coordinate) {
@@ -17,6 +17,6 @@ public class SphericalVariation extends VariationFunction{
 
     @Override
     public String getName() {
-        return name;
+        return NAME;
     }
 }

@@ -1,13 +1,13 @@
 package backend.academy.image;
 
 import backend.academy.functions.variations.VariationFunction;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j @Getter
 @Setter
@@ -22,6 +22,7 @@ public class FractalImage {
     private boolean symmetry;
     private int threads;
 
+    @SuppressWarnings("ParameterNumber")
     public FractalImage(
         int fractalDots,
         int transformsNum,
@@ -38,7 +39,7 @@ public class FractalImage {
         this.xRes = xRes;
         this.yRes = yRes;
         this.variation = variation;
-        this.symmetry=symmetry;
+        this.symmetry = symmetry;
         this.threads = threads;
         pixels = new Pixel[xRes][yRes];
         for (int x = 0; x < xRes; x++) {
@@ -48,6 +49,7 @@ public class FractalImage {
         }
     }
 
+    @SuppressWarnings("MagicNumber")
     public void createImage(boolean multithread) {
         BufferedImage image = new BufferedImage(xRes, yRes, BufferedImage.TYPE_INT_RGB);
 
@@ -58,15 +60,15 @@ public class FractalImage {
                 int blue = pixels[x][y].getRgb().getBlue();
                 int rgb = (red << 16) | (green << 8) | blue;
                 image.setRGB(x, y, rgb);
-                if(symmetry){
-                    int mirroredX = xRes-1-x;
-                    image.setRGB(mirroredX,y,rgb);
+                if (symmetry) {
+                    int mirroredX = xRes - 1 - x;
+                    image.setRGB(mirroredX, y, rgb);
                 }
             }
         }
         try {
             String name;
-            if(multithread){
+            if (multithread) {
                 name = "multi_thread_output_image.png";
             } else {
                 name = "one_thread_output_image.png";

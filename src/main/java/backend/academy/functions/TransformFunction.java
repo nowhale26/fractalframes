@@ -3,9 +3,9 @@ package backend.academy.functions;
 import backend.academy.Constants;
 import backend.academy.Coordinate;
 import backend.academy.image.Rgb;
-import lombok.Getter;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.Getter;
 
 @Getter
 public class TransformFunction {
@@ -31,8 +31,9 @@ public class TransformFunction {
         this.rgb = rgb;
     }
 
+    @SuppressFBWarnings("PREDICTABLE_RANDOM")
     public void generateFunction() {
-        while(true){
+        while (true) {
             a = ThreadLocalRandom.current().nextDouble(-1, 1);
             double dBound = 1d - Math.pow(a, 2);
             d = ThreadLocalRandom.current().nextDouble(-1d + dBound, 1d - dBound);
@@ -41,11 +42,11 @@ public class TransformFunction {
             e = ThreadLocalRandom.current().nextDouble(-1d + eBound, 1d - eBound);
             c = ThreadLocalRandom.current().nextDouble(-1, 1);
             f = ThreadLocalRandom.current().nextDouble(-1, 1);
-            if(a*a+b*b+d*d+e*e<1+(a*e-b*d)*(a*e-b*d)){
+            if (a * a + b * b + d * d + e * e < 1 + (a * e - b * d) * (a * e - b * d)) {
                 break;
             }
         }
-        rgb = Constants.COLOURS[ThreadLocalRandom.current().nextInt(0, Constants.COLOURS.length)];
+        rgb = Constants.COLOURS.get(ThreadLocalRandom.current().nextInt(0, Constants.COLOURS.size()));
 
     }
 

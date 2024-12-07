@@ -10,12 +10,12 @@ public class Rgb {
     private int green;
     private int blue;
 
-    public Rgb(){
+    public Rgb() {
 
     }
 
-    public Rgb(int red, int green, int blue){
-        this.red= red;
+    public Rgb(int red, int green, int blue) {
+        this.red = red;
         this.green = green;
         this.blue = blue;
     }

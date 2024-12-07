@@ -70,9 +70,10 @@ public class UserInputTest {
         int transformsNum = UserInteraction.getTransformsNum(input, output);
         assertThat(transformsNum).isEqualTo(Constants.MAX_TRANSFORMS);
     }
+
     @Test
     public void testSymmetry() throws IOException {
-        String simulatedInput =  "2\n" +
+        String simulatedInput = "2\n" +
             "f\n" +
             "0\n";
         InputStream input = new ByteArrayInputStream(simulatedInput.getBytes());
@@ -80,19 +81,21 @@ public class UserInputTest {
         boolean symmetry = UserInteraction.getSymmetry(input, output);
         assertThat(symmetry).isEqualTo(false);
     }
+
     @Test
     public void testVariation() throws IOException {
-        String simulatedInput =  "150\n" +
+        String simulatedInput = "150\n" +
             "a\n" +
             "0\n";
         InputStream input = new ByteArrayInputStream(simulatedInput.getBytes());
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         VariationFunction variation = UserInteraction.getVariation(input, output);
-        assertThat(variation).isEqualTo(VariationsList.VARIATION_FUNCTIONS[0]);
+        assertThat(variation).isEqualTo(VariationsList.VARIATION_FUNCTIONS.get(0));
     }
+
     @Test
     public void testThreads() throws IOException {
-        String simulatedInput =  "0\n" +
+        String simulatedInput = "0\n" +
             "9\n" +
             "h\n" +
             Constants.MIN_THREADS + "\n";

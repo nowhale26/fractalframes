@@ -10,12 +10,12 @@ public class Pixel {
     private int counter;
     private double normal;
 
-    public Pixel(){
+    public Pixel() {
         rgb = new Rgb();
         rgb.setRed(0);
         rgb.setGreen(0);
         rgb.setBlue(0);
-        counter=0;
+        counter = 0;
     }
 
 }

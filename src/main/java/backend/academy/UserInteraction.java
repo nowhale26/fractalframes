@@ -3,9 +3,6 @@ package backend.academy;
 import backend.academy.functions.variations.VariationFunction;
 import backend.academy.functions.variations.VariationsList;
 import backend.academy.image.FractalImage;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,10 +11,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 
 public class UserInteraction {
-
-    private static final Logger log = LoggerFactory.getLogger(UserInteraction.class);
 
     private UserInteraction() {
 
@@ -28,7 +25,7 @@ public class UserInteraction {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int yRes = -1;
         while (yRes < Constants.MIN_RES || yRes > Constants.MAX_Y) {
-            writer.println("Введите высоту изображения от " + Constants.MIN_RES + " до " + Constants.MAX_Y);
+            writer.println("Введите высоту изображения от " + Constants.MIN_RES + Constants.BEFORE + Constants.MAX_Y);
             String heightInput = reader.readLine();
             if (heightInput == null) {
                 writer.println("Ошибка: не удалось считать высоту");
@@ -52,7 +49,7 @@ public class UserInteraction {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int xRes = -1;
         while (xRes < Constants.MIN_RES || xRes > Constants.MAX_X) {
-            writer.println("Введите ширину изображения от " + Constants.MIN_RES + " до " + Constants.MAX_X);
+            writer.println("Введите ширину изображения от " + Constants.MIN_RES + Constants.BEFORE + Constants.MAX_X);
             String widthInput = reader.readLine();
             if (widthInput == null) {
                 writer.println("Ошибка: не удалось считать ширину");
@@ -74,8 +71,8 @@ public class UserInteraction {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int fractalDots = -1;
         while (fractalDots < Constants.MIN_FRACTALS_IT || fractalDots > Constants.MAX_FRACTALS_IT) {
-            writer.println("Введите количество фрактальных точек от " + Constants.MIN_FRACTALS_IT + " до " +
-                Constants.MAX_FRACTALS_IT);
+            writer.println("Введите количество фрактальных точек от " + Constants.MIN_FRACTALS_IT + Constants.BEFORE
+                + Constants.MAX_FRACTALS_IT);
             String fractalDotsInput = reader.readLine();
             if (fractalDotsInput == null) {
                 writer.println("Ошибка: не удалось считать количество фрактальных точек");
@@ -98,7 +95,8 @@ public class UserInteraction {
         int iterations = -1;
         while (iterations < Constants.MIN_FRACTALS_IT || iterations > Constants.MAX_FRACTALS_IT) {
             writer.println(
-                "Введите количество итераций от " + Constants.MIN_FRACTALS_IT + " до " + Constants.MAX_FRACTALS_IT);
+                "Введите количество итераций от " + Constants.MIN_FRACTALS_IT + Constants.BEFORE
+                    + Constants.MAX_FRACTALS_IT);
             String iterationsInput = reader.readLine();
             if (iterationsInput == null) {
                 writer.println("Ошибка: не удалось считать количество итераций");
@@ -120,8 +118,8 @@ public class UserInteraction {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int transformsNum = -1;
         while (transformsNum < Constants.MIN_TRANSFORMS || transformsNum > Constants.MAX_TRANSFORMS) {
-            writer.println("Введите количество афинных преобразований от " + Constants.MIN_TRANSFORMS + " до " +
-                Constants.MAX_TRANSFORMS);
+            writer.println("Введите количество афинных преобразований от " + Constants.MIN_TRANSFORMS + Constants.BEFORE
+                + Constants.MAX_TRANSFORMS);
             String transformsInput = reader.readLine();
             if (transformsInput == null) {
                 writer.println("Ошибка: не удалось считать количество афинных преобразований");
@@ -144,7 +142,8 @@ public class UserInteraction {
         int sym = -1;
         while (sym != 0 && sym != 1) {
             writer.println(
-                "Введите 1, если хотите использовать параметр симметрии\nВведите 0, если не хотите использовать параметр симметрии");
+                "Введите 1, если хотите использовать параметр симметрии");
+            writer.println("Введите 0, если не хотите использовать параметр симметрии");
             String symInput = reader.readLine();
             if (symInput == null) {
                 writer.println("Ошибка: не удалось считать параметр симметрии");
@@ -165,12 +164,12 @@ public class UserInteraction {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         writer.println("Выберите одну нелинейную функцию из списка ниже, нужно ввести ее номер\n");
-        VariationFunction[] variations = VariationsList.VARIATION_FUNCTIONS;
-        for (int i = 0; i < variations.length; i++) {
-            writer.println(variations[i].getName() + " Номер: " + i);
+        List<VariationFunction> variations = VariationsList.VARIATION_FUNCTIONS;
+        for (int i = 0; i < variations.size(); i++) {
+            writer.println(variations.get(i).getName() + " Номер: " + i);
         }
         int variationIndex = -1;
-        while (variationIndex < 0 || variationIndex > variations.length - 1) {
+        while (variationIndex < 0 || variationIndex > variations.size() - 1) {
             String variationInput = reader.readLine();
             if (variationInput == null) {
                 writer.println("Ошибка: не удалось считать номер нелинейной функции");
@@ -183,7 +182,7 @@ public class UserInteraction {
             }
             variationIndex = Integer.parseInt(variationInput);
         }
-        return variations[variationIndex];
+        return variations.get(variationIndex);
     }
 
     public static int getNumOfThreads(InputStream input, OutputStream output) throws IOException {
@@ -191,8 +190,8 @@ public class UserInteraction {
         BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int threadsNum = -1;
         while (threadsNum < Constants.MIN_THREADS || threadsNum > Constants.MAX_THREADS) {
-            writer.println("Введите количество потоков от " + Constants.MIN_THREADS + " до " +
-                Constants.MAX_THREADS);
+            writer.println("Введите количество потоков от " + Constants.MIN_THREADS + Constants.BEFORE
+                + Constants.MAX_THREADS);
             writer.println("(1 поток означает работу в однопоточном режиме)");
             String transformsInput = reader.readLine();
             if (transformsInput == null) {
@@ -229,7 +228,8 @@ public class UserInteraction {
         int bool = -1;
         while (bool != 0 && bool != 1) {
             writer.println(
-                "Введите 1, если хотите использовать программу только в многопоточном режиме\nВведите 0, если хотите использовать оба режима");
+                "Введите 1, если хотите использовать программу только в многопоточном режиме");
+            writer.println("Введите 0, если хотите использовать оба режима");
             String boolInput = reader.readLine();
             if (boolInput == null) {
                 writer.println("Ошибка: не удалось считать режим");
@@ -246,16 +246,15 @@ public class UserInteraction {
         return bool == 1;
     }
 
-    public static void printStatistics(double oneThreadTime, double multiThreadTime, OutputStream output)
-        throws IOException {
+    public static void printStatistics(double oneThreadTime, double multiThreadTime, OutputStream output) {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
-        writer.println("Время исполнения программы в однопоточном режиме: " + oneThreadTime + " секунд");
-        writer.println("Время исполнения программы в многопоточном режиме: " + multiThreadTime + " секунд");
+        writer.println("Время исполнения программы в однопоточном режиме: " + oneThreadTime + Constants.SECONDS);
+        writer.println("Время исполнения программы в многопоточном режиме: " + multiThreadTime + Constants.SECONDS);
         double comparison = oneThreadTime / multiThreadTime;
         writer.println("Программа в многопоточном режиме выполнилась в " + comparison + " раз быстрее");
     }
 
-    public static void printStartRender(OutputStream output) throws IOException{
+    public static void printStartRender(OutputStream output) {
         PrintWriter writer = new PrintWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8), true);
         writer.println("Рендер картинки начался...");
     }
