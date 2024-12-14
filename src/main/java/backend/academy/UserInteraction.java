@@ -3,6 +3,9 @@ package backend.academy;
 import backend.academy.functions.variations.VariationFunction;
 import backend.academy.functions.variations.VariationsList;
 import backend.academy.image.FractalImage;
+import backend.academy.renders.ImageRenderer;
+import backend.academy.renders.MultiThreadRenderer;
+import backend.academy.renders.OneThreadRenderer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -259,4 +262,36 @@ public class UserInteraction {
         writer.println("Рендер картинки начался...");
     }
 
+    public static void chooseThreadingMode(FractalImage image)
+        throws IOException {
+        ImageRenderer renderer;
+        ImageRenderer renderer2;
+        if (image.getThreads() == 1) {
+            renderer = new OneThreadRenderer();
+            printStartRender(System.out);
+            renderImage(renderer, image, false);
+        } else if (onlyMultiThread(System.in, System.out)) {
+            renderer = new MultiThreadRenderer();
+            printStartRender(System.out);
+            renderImage(renderer, image, true);
+        } else {
+            renderer = new OneThreadRenderer();
+            printStartRender(System.out);
+            long oneThreadStartTime = System.currentTimeMillis();
+            renderImage(renderer, image, false);
+            double oneThreadTime = (double) (System.currentTimeMillis() - oneThreadStartTime) / Constants.TO_SECONDS;
+            renderer2 = new MultiThreadRenderer();
+            printStartRender(System.out);
+            long multiThreadStartTime = System.currentTimeMillis();
+            renderImage(renderer2, image, true);
+            double multiThreadTime =
+                (double) (System.currentTimeMillis() - multiThreadStartTime) / Constants.TO_SECONDS;
+            printStatistics(oneThreadTime, multiThreadTime, System.out);
+        }
+    }
+
+    private static void renderImage(ImageRenderer renderer, FractalImage image, boolean multithread) {
+        renderer.render(image);
+        image.createImage(multithread);
+    }
 }

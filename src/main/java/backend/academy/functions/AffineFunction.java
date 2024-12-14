@@ -8,7 +8,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import lombok.Getter;
 
 @Getter
-public class TransformFunction {
+public class AffineFunction {
     private double a;
     private double b;
     private double c;
@@ -17,11 +17,11 @@ public class TransformFunction {
     private double f;
     private Rgb rgb;
 
-    public TransformFunction() {
+    public AffineFunction() {
 
     }
 
-    public TransformFunction(double a, double b, double c, double d, double e, double f, Rgb rgb) {
+    public AffineFunction(double a, double b, double c, double d, double e, double f, Rgb rgb) {
         this.a = a;
         this.b = b;
         this.c = c;
@@ -50,7 +50,7 @@ public class TransformFunction {
 
     }
 
-    public void useTransform(Coordinate coordinate) {
+    public void useAffine(Coordinate coordinate) {
         double x = coordinate.getX();
         double y = coordinate.getY();
         coordinate.setX(a * x + b * y + c);

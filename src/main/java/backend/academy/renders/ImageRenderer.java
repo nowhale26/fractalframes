@@ -2,7 +2,7 @@ package backend.academy.renders;
 
 import backend.academy.Constants;
 import backend.academy.Coordinate;
-import backend.academy.functions.TransformFunction;
+import backend.academy.functions.AffineFunction;
 import backend.academy.image.FractalImage;
 import backend.academy.image.Pixel;
 import backend.academy.image.Rgb;
@@ -14,10 +14,10 @@ public abstract class ImageRenderer {
 
     protected abstract void logGammaCorrection(FractalImage fractalImage);
 
-    protected TransformFunction[] generateTransformsList(int n) {
-        TransformFunction[] transforms = new TransformFunction[n];
+    protected AffineFunction[] generateTransformsList(int n) {
+        AffineFunction[] transforms = new AffineFunction[n];
         for (int i = 0; i < n; i++) {
-            transforms[i] = new TransformFunction();
+            transforms[i] = new AffineFunction();
             transforms[i].generateFunction();
         }
         return transforms;
@@ -45,7 +45,7 @@ public abstract class ImageRenderer {
     protected void doRendering(
         FractalImage fractalImage,
         double aspectRatio,
-        TransformFunction[] transforms,
+        AffineFunction[] transforms,
         int startDots,
         int finishDots,
         boolean multithread
@@ -60,9 +60,9 @@ public abstract class ImageRenderer {
             double y = ThreadLocalRandom.current().nextDouble(yMin, yMax);
             Coordinate coord = new Coordinate(x, y);
             for (int step = Constants.START_ITERATIONS; step < fractalImage.iterations; step++) {
-                TransformFunction transform = transforms[ThreadLocalRandom.current().nextInt(0,
+                AffineFunction transform = transforms[ThreadLocalRandom.current().nextInt(0,
                     fractalImage.transformsNum)];
-                transform.useTransform(coord);
+                transform.useAffine(coord);
                 fractalImage.variation.useVariation(coord);
                 if (step >= 0 && coord.getX() >= xMin && coord.getX() <= xMax && coord.getY() >= yMin
                     && coord.getY() <= yMax) {
@@ -101,7 +101,7 @@ public abstract class ImageRenderer {
         return max;
     }
 
-    protected void setColours(Pixel currentPixel, TransformFunction transform) {
+    protected void setColours(Pixel currentPixel, AffineFunction transform) {
         if (currentPixel.getCounter() == 0) {
             currentPixel.getRgb().setRed(transform.getRgb().getRed());
             currentPixel.getRgb().setGreen(transform.getRgb().getGreen());

@@ -1,6 +1,6 @@
 package backend.academy.renders;
 
-import backend.academy.functions.TransformFunction;
+import backend.academy.functions.AffineFunction;
 import backend.academy.image.FractalImage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,7 +9,7 @@ public class MultiThreadRenderer extends ImageRenderer {
     @Override
     public void render(FractalImage fractalImage) {
         final double aspectRatio = (double) fractalImage.xRes / (double) fractalImage.yRes;
-        TransformFunction[] transforms = generateTransformsList(fractalImage.transformsNum);
+        AffineFunction[] transforms = generateTransformsList(fractalImage.transformsNum);
         int dotsPerThread = fractalImage.fractalDots / fractalImage.getThreads();
         try (ExecutorService executor = Executors.newFixedThreadPool(fractalImage.getThreads())) {
             for (int i = 0; i < fractalImage.getThreads(); i++) {

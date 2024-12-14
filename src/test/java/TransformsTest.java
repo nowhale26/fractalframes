@@ -1,4 +1,4 @@
-import backend.academy.functions.TransformFunction;
+import backend.academy.functions.AffineFunction;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,7 +7,7 @@ public class TransformsTest {
 
     @Test
     public void testCoefficients(){
-        TransformFunction transform = new TransformFunction();
+        AffineFunction transform = new AffineFunction();
         transform.generateFunction();
         double a = transform.getA();
         double d = transform.getD();
